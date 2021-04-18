@@ -1,8 +1,9 @@
 /* eslint-disable react/prop-types */
 import './CurrencyCard.css';
-import React from 'react';
+import React, { useContext } from 'react';
 import getSymbolFromCurrency from 'currency-symbol-map';
 import { LinkContainer } from 'react-router-bootstrap';
+import { CurrencyExchangeContext, setHistoricalRates } from '../../appContextStore.jsx';
 
 /**
  * React component for displaying the details of a single currency
@@ -15,9 +16,18 @@ import { LinkContainer } from 'react-router-bootstrap';
  * @returns - component that can be used to display the currency data
  */
 export default function CurrencyCard({ singleCurrencyData, exchangeRate }) {
+  const { store, dispatch } = useContext(CurrencyExchangeContext);
+
+  const clearHistoricalData = () => {
+    dispatch(setHistoricalRates({}));
+  };
+
   return (
     <div className="col mb-4">
-      <LinkContainer to={`/currencydetail/${singleCurrencyData.currency_code}`}>
+      <LinkContainer
+        to={`/currencydetail/${singleCurrencyData.currency_code}`}
+        onClick={() => { clearHistoricalData(); }}
+      >
         <div className="card currency-card">
           <div className="card-body currency-card-body">
             <h6 className="card-title d-flex justify-content-between">
