@@ -258,7 +258,7 @@ export function getLatestExchangeRates(dispatch, baseCurrency) {
  * @returns
  */
 export function getHistoricalRatesForPeriod(dispatch, baseCurrency, numOfDays,
-  requestingCurrencyCode) {
+  requestingCurrencyCode, setHistoryLoaded) {
   return axios.get(`${BACKEND_URL}/api/historical-rate/${baseCurrency}/${numOfDays}?currencies=${requestingCurrencyCode}`)
     .then((result) => {
       /**
@@ -273,5 +273,6 @@ export function getHistoricalRatesForPeriod(dispatch, baseCurrency, numOfDays,
        *              }
        */
       dispatch(setHistoricalRates(result.data));
+      setHistoryLoaded(true);
     });
 }
