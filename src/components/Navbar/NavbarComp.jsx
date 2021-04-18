@@ -42,7 +42,7 @@ export default function NavbarComp() {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="mr-auto">
-            <LinkContainer to="/viewAllCurrencies">
+            <LinkContainer to="/currencylist">
               <Nav.Link>Currencies</Nav.Link>
             </LinkContainer>
           </Nav>

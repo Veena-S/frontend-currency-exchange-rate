@@ -2,6 +2,7 @@
 import './CurrencyCard.css';
 import React from 'react';
 import getSymbolFromCurrency from 'currency-symbol-map';
+import { LinkContainer } from 'react-router-bootstrap';
 
 /**
  * React component for displaying the details of a single currency
@@ -16,19 +17,21 @@ import getSymbolFromCurrency from 'currency-symbol-map';
 export default function CurrencyCard({ singleCurrencyData, exchangeRate }) {
   return (
     <div className="col mb-4">
-      <div className="card currency-card">
-        <div className="card-body currency-card-body">
-          <h6 className="card-title d-flex justify-content-between">
-            {singleCurrencyData.currency_code}
-            <span>
-              {Number(exchangeRate).toFixed(Number(singleCurrencyData.decimal_units))}
-              {' '}
-              {getSymbolFromCurrency(singleCurrencyData.currency_code)}
-            </span>
-          </h6>
-          <p className="text-muted"><small>{singleCurrencyData.currency_name}</small></p>
+      <LinkContainer to={`/currencydetail/${singleCurrencyData.currency_code}`}>
+        <div className="card currency-card">
+          <div className="card-body currency-card-body">
+            <h6 className="card-title d-flex justify-content-between">
+              {singleCurrencyData.currency_code}
+              <span>
+                {Number(exchangeRate).toFixed(Number(singleCurrencyData.decimal_units))}
+                {' '}
+                {getSymbolFromCurrency(singleCurrencyData.currency_code)}
+              </span>
+            </h6>
+            <p className="text-muted"><small>{singleCurrencyData.currency_name}</small></p>
+          </div>
         </div>
-      </div>
+      </LinkContainer>
     </div>
   );
 }
