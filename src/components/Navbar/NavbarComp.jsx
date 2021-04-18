@@ -26,7 +26,7 @@ export default function NavbarComp() {
 
   // Dropdown button for base currency selected
   const BaseCurrencyDropDown = () => (
-    <NavDropdown title={`Base: ${store.baseCurrency}`} id="collasible-nav-dropdown">
+    <NavDropdown title={`Base: ${store.baseCurrency}`} id="collasible-nav-dropdown" className="pr-3">
       {baseDropdownItems}
     </NavDropdown>
   );
