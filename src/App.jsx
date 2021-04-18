@@ -1,22 +1,20 @@
 import './App.css';
 import React from 'react';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { CurrencyExchangeProvider } from './appContextStore.jsx';
+import NavbarComp from './components/Navbar/NavbarComp.jsx';
+import HomePage from './components/HomePage/HomePage.jsx';
 
 export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <CurrencyExchangeProvider>
+      <Router>
+        <NavbarComp />
+        <Switch>
+          <Route exact path="/" component={HomePage} />
+          <Route path="/viewAllCurrencies" component={HomePage} />
+        </Switch>
+      </Router>
+    </CurrencyExchangeProvider>
   );
 }
