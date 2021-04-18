@@ -1,30 +1,53 @@
-# Getting Started with Create React App
+# Frontend for Currency Exchange Rate App
+
+## Description
+
+This app will allow an user to consult historical exchange rates for a specific
+currency.
+
+### Setup
+
+1. Clone the repo
+2. Install all the dependencies through `npm install`
+3. Run the client using `npm start`
+
+### Features
+
+- Can display the list of the available currencies
+- For each currency, following details are displayed:
+  - Currency Code
+  - Name
+  - Currency Symbol
+- Possible to get the historical exchange rates for the selected time-period of 3 or 7 days, for the chosen currency.
+- Provision to change the base currency with which the exchange rates are taken.
+
+## Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+### Available Scripts
 
 In the project directory, you can run:
 
 ### `yarn start`
 
-Runs the app in the development mode.\
+Runs the app in the development mode.
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.\
+The page will reload if you make edits.
 You will also see any lint errors in the console.
 
 ### `yarn test`
 
-Launches the test runner in the interactive watch mode.\
+Launches the test runner in the interactive watch mode.
 See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
 ### `yarn build`
 
-Builds the app for production to the `build` folder.\
+Builds the app for production to the `build` folder.
 It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
+The build is minified and the filenames include the hashes.
 Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
