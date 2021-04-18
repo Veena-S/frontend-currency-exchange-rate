@@ -1,6 +1,7 @@
 /**
- * This file holds the global state for the complete application
+ * Defines Context and holds the global state for the complete application
  * Also, reducer function is defined in here
+ * 
  */
 
 // Stores the state across the application
@@ -62,3 +63,21 @@ export function setCurrencyList( currencyList ){
     },
   }
 }
+
+/******************************************
+ * ****************************************
+ *    Context and Provider
+ *
+ * Context provides a way to pass data through the component tree without 
+ * having to pass props down manually at every level
+ * ****************************************
+ */
+
+// Create a context for the current app
+// When React renders a component that subscribes to this Context object 
+// it will read the current context value from the matching Provider.
+export const CurrencyExchangeContext = React.createContext(null);
+// Every Context object comes with a Provider React component that allows
+// consuming components to subscribe to context changes.
+const { Provider } = CurrencyExchangeContext;
+
