@@ -7,6 +7,7 @@
 
 import React, { useReducer } from 'react';
 import axios from 'axios';
+import { writeStorage, useLocalStorage, deleteFromStorage } from '@rehooks/local-storage';
 
 // Backend URL
 const PORT = process.env.PORT || 3004;
@@ -14,7 +15,7 @@ export const BACKEND_URL = `http://localhost:${PORT}`;
 
 // Stores the state across the application
 export const initialState = {
-  baseCurrency: 'USD',
+  baseCurrency: '',
   currencyDetails: {}, // Key = Currency Code, Value = {name, code, units, country array}
   currencyCodeList: [],
   /**
@@ -39,6 +40,7 @@ export const initialState = {
 };
 
 // Action Types
+const SET_INITIAL_BASE_CURRENCY = '';
 // To set the base currency selected
 const SET_BASE_CURRENCY = 'SET_BASE_CURRENCY';
 // To set the supported list of currency details
@@ -54,8 +56,23 @@ const SET_HISTORICAL_RATES = 'SET_HISTORICAL_RATES';
 // It allows to set new state values based on the previous state
 export function currencyExchangeReducer(state, action) {
   switch (action.type) {
+    case SET_INITIAL_BASE_CURRENCY:
+    {
+      // Check whether the local storage already has baseCurrency.
+      // If so, initialize with it
+      const [localStoreBaseCurrency] = useLocalStorage('baseCurrency');
+      const tempBaseCurrency = (localStoreBaseCurrency) || 'USD';
+      if (!localStoreBaseCurrency) {
+        writeStorage('baseCurrency', tempBaseCurrency);
+      }
+      return { ...state, baseCurrency: tempBaseCurrency };
+    }
     case SET_BASE_CURRENCY:
+    {
+      // Whenever the base currency is changed update the local storage
+      writeStorage('baseCurrency', action.payload.baseCurrency);
       return { ...state, baseCurrency: action.payload.baseCurrency };
+    }
     case SET_CURRENCY_DETAILS:
       // Get the codes of all the currency and set it to the state currencyCodeList also
       return {
@@ -99,6 +116,13 @@ export function setBaseCurrency(baseCurrency) {
     payload: {
       baseCurrency,
     },
+  };
+}
+
+export function setInitialBaseCurrency() {
+  return {
+    type: SET_INITIAL_BASE_CURRENCY,
+    payload: {},
   };
 }
 
@@ -175,6 +199,15 @@ const { Provider } = CurrencyExchangeContext;
  * @returns - initialized Provider
  */
 export function CurrencyExchangeProvider({ children }) {
+  // Before using reducer, set the base currency:
+
+  const [localStoreBaseCurrency] = useLocalStorage('baseCurrency');
+  const tempBaseCurrency = (localStoreBaseCurrency) || 'USD';
+  if (!localStoreBaseCurrency) {
+    writeStorage('baseCurrency', tempBaseCurrency);
+  }
+  initialState.baseCurrency = tempBaseCurrency;
+
   // The useReducer function accepts a reducer of type (state, action) ,
   // and returns the current state paired with a dispatch method.
   const [store, dispatch] = useReducer(currencyExchangeReducer, initialState);

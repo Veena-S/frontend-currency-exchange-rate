@@ -1,5 +1,7 @@
 import React, { useContext, useEffect } from 'react';
-import { CurrencyExchangeContext, getCurrencyList, getLatestExchangeRates } from '../../appContextStore.jsx';
+import {
+  CurrencyExchangeContext, getCurrencyList, getLatestExchangeRates, setInitialBaseCurrency,
+} from '../../appContextStore.jsx';
 import CurrencyCardsContainer from '../Currency/CurrencyCardsContainerComp.jsx';
 
 export default function HomePage() {
