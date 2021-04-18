@@ -18,6 +18,7 @@ import { CurrencyExchangeContext, setHistoricalRates } from '../../appContextSto
 export default function CurrencyCard({ singleCurrencyData, exchangeRate }) {
   const { store, dispatch } = useContext(CurrencyExchangeContext);
 
+  // Added a click handler function to remove the already existing historical data in the store
   const clearHistoricalData = () => {
     dispatch(setHistoricalRates({}));
   };

@@ -1,8 +1,7 @@
 /* eslint-disable react/prop-types */
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import moment from 'moment';
 import getSymbolFromCurrency from 'currency-symbol-map';
-import { useParams } from 'react-router';
 import { CurrencyExchangeContext } from '../../appContextStore.jsx';
 
 export default function DisplayTodaysExchangeRate({ currencyCode }) {

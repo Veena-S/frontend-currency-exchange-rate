@@ -1,8 +1,6 @@
 /* eslint-disable react/prop-types */
 import React, { useContext, useState } from 'react';
 import { useParams } from 'react-router';
-import { LinkContainer } from 'react-router-bootstrap';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import DisplayHistoricalData from './DisplayHistoricalData.jsx';
 import { CurrencyExchangeContext, getHistoricalRatesForPeriod } from '../../appContextStore.jsx';
 import DisplayTodaysExchangeRate from './DisplayTodaysExchangeRate.jsx';

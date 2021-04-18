@@ -1,8 +1,7 @@
 /* eslint-disable react/prop-types */
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import moment from 'moment';
 import getSymbolFromCurrency from 'currency-symbol-map';
-import { useParams } from 'react-router';
 import { CurrencyExchangeContext } from '../../appContextStore.jsx';
 
 export default function DisplayHistoricalData({ currencyCode, days }) {
@@ -18,6 +17,7 @@ export default function DisplayHistoricalData({ currencyCode, days }) {
   const singleCurrencyData = store.currencyDetails[currencyCode];
   const exchangeRate = store.latestExchangeRateDetails.rates[currencyCode];
 
+  // Grid form to display the currency rates
   const DisplayHistoricalRates = () => (
     <div>
       {Object.keys(store.historicalExchangeRates.data).map((date, index) => (
