@@ -23,6 +23,18 @@ export const initialState = {
     }
    */
   latestExchangeRateDetails: {},
+  /**
+   * ReturnData: { status: 200, statusText: 'Success',
+   *               data: {[yyyy-mm-dd]: {status: 200, statusText: 'Success',
+   *                                     response: {date: '2021-04-17', base: 'baseCurrency',
+   *                                             rates: {  requestingCurrencyCode: 2.75196681}},
+   *                       [yyyy-mm-dd]:{status: 200, statusText: 'Success',
+   *                                     response:{<data returned from axios call to URL>}},
+   *                      ....
+   *                    }
+   *              }
+   */
+  historicalExchangeRates: {},
 
 };
 
@@ -35,6 +47,8 @@ const SET_CURRENCY_DETAILS = 'SET_CURRENCY_DETAILS';
 const SET_CURRENCY_CODE_LIST = 'SET_CURRENCY_CODE_LIST';
 // To set the latest currency details
 const SET_LATEST_RATES = 'SET_LATEST_RATES';
+// To set the historical exchange rates
+const SET_HISTORICAL_RATES = 'SET_HISTORICAL_RATES';
 
 // Reducer function that manipulates the state
 // It allows to set new state values based on the previous state
@@ -57,6 +71,11 @@ export function currencyExchangeReducer(state, action) {
       return {
         ...state,
         latestExchangeRateDetails: { ...action.payload.latestExchangeRateDetails },
+      };
+    case SET_HISTORICAL_RATES:
+      return {
+        ...state,
+        historicalExchangeRates: { ...action.payload.historicalExchangeRates },
       };
     default:
       return state;
@@ -116,6 +135,18 @@ export function setLatestRates(latestExchangeRateDetails) {
   return {
     type: SET_LATEST_RATES,
     payload: { latestExchangeRateDetails },
+  };
+}
+
+/**
+ * Function to create action object used to modify the state for historical data
+ * @param {Object} historicalExchangeRates - Details for a period of dates returned from server
+ * @returns - Action Object
+ */
+export function setHistoricalRates(historicalExchangeRates) {
+  return {
+    type: SET_HISTORICAL_RATES,
+    payload: { historicalExchangeRates },
   };
 }
 
@@ -182,5 +213,32 @@ export function getLatestExchangeRates(dispatch, baseCurrency) {
   return axios.get(`${BACKEND_URL}/api/latest-rate/${baseCurrency}`)
     .then((result) => {
       dispatch(setLatestRates(result.data));
+    });
+}
+
+/**
+ * Function to get the historical exchange rate for over a period of time
+ * @param {Function} dispatch - Dispatch function
+ * @param {String} baseCurrency - Base currency on which rates are calculated
+ * @param {Number} numOfDays - Time period for historical data
+ * @param {String} requestingCurrencyCode - Currency code for which historical data is requesting
+ * @returns
+ */
+export function getHistoricalRatesForPeriod(dispatch, baseCurrency, numOfDays,
+  requestingCurrencyCode) {
+  return axios.get(`${BACKEND_URL}/api/historical-rate/${baseCurrency}/${numOfDays}?currencies=${requestingCurrencyCode}`)
+    .then((result) => {
+      /**
+       * ReturnData: { status: 200, statusText: 'Success',
+       *               data: {[yyyy-mm-dd]: {status: 200, statusText: 'Success',
+       *                                     response: {date: '2021-04-17', base: 'baseCurrency',
+       *                                             rates: {  requestingCurrencyCode: 2.75196681}},
+       *                       [yyyy-mm-dd]:{status: 200, statusText: 'Success',
+       *                                     response:{<data returned from axios call to URL>}},
+       *                      ....
+       *                    }
+       *              }
+       */
+      dispatch(setHistoricalRates(result.data));
     });
 }

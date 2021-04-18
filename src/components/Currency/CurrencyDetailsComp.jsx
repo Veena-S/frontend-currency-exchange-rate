@@ -2,7 +2,7 @@
 import React, { useContext } from 'react';
 import getSymbolFromCurrency from 'currency-symbol-map';
 import { useParams } from 'react-router';
-import { CurrencyExchangeContext } from '../../appContextStore.jsx';
+import { CurrencyExchangeContext, getHistoricalRatesForPeriod } from '../../appContextStore.jsx';
 
 /**
  * React component for displaying the details of a single currency
