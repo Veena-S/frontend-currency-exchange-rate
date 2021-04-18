@@ -20,10 +20,11 @@ export default function NavbarComp() {
   };
 
   // Dropdown currency codes
-  const baseDropdownItems = store.currencyCodeList.map((currencyCode) => (
-    <NavDropdown.Item href="#" onClick={() => { setSelectedBaseCurrency(currencyCode); }}>{currencyCode}</NavDropdown.Item>
+  const baseDropdownItems = store.currencyCodeList.map((currencyCode, index) => (
+    <NavDropdown.Item href="#" onClick={() => { setSelectedBaseCurrency(currencyCode); }} key={`currency-${Number(index)}`}>{currencyCode}</NavDropdown.Item>
   ));
 
+  // Dropdown button for base currency selected
   const BaseCurrencyDropDown = () => (
     <NavDropdown title={`Base: ${store.baseCurrency}`} id="collasible-nav-dropdown">
       {baseDropdownItems}

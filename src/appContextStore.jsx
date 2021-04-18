@@ -6,6 +6,7 @@
  */
 
 import React, { useReducer } from 'react';
+import axios from 'axios';
 
 // Backend URL
 const PORT = process.env.PORT || 3004;
@@ -121,6 +122,9 @@ export function CurrencyExchangeProvider({ children }) {
  *
  */
 
-export function getCurrencyList() {
-
+export function getCurrencyList(dispatch) {
+  axios.get(`${BACKEND_URL}/api/currencies`)
+    .then((result) => {
+      dispatch(setCurrencyList(result.data));
+    });
 }
