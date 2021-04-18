@@ -6,6 +6,10 @@
 
 import { useReducer } from "react";
 
+// Backend URL
+const PORT = process.env.PORT || 3004;
+export const BACKEND_URL = `http://localhost:${PORT}`;
+
 // Stores the state across the application
 export const initialState = {
   baseCurrency: 'USD',
@@ -83,9 +87,15 @@ export const CurrencyExchangeContext = React.createContext(null);
 // consuming components to subscribe to context changes.
 const { Provider } = CurrencyExchangeContext;
 
-// Export a Provider component that contains the initialized reducer
-// The benefit of combining useReducer with context is being able to call 
-// the dispatch function anywhere down the component tree without passing through props.
+
+
+/**
+ * Provider component that contains the initialized reducer
+ * The benefit of combining useReducer with context is being able to call 
+ * the dispatch function anywhere down the component tree without passing through props.
+ * @param {React.Component} param0 - prop of children
+ * @returns - initialized Provider 
+ */
 export function CurrencyExchangeProvider({children}) {
   // The useReducer function accepts a reducer of type (state, action) ,
   // and returns the current state paired with a dispatch method.
@@ -98,4 +108,14 @@ export function CurrencyExchangeProvider({children}) {
       {children}
     </Provider>
   )
+}
+
+
+/*
+ *  Requests to the Backend or any other ajax requests * 
+ * 
+ */
+
+export function getCurrencyList() {
+  
 }
