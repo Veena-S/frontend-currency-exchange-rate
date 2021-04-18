@@ -14,15 +14,16 @@ export const BACKEND_URL = `http://localhost:${PORT}`;
 // Stores the state across the application
 export const initialState = {
   baseCurrency: 'USD',
-  currencyList: {},
+  currencyDetails: {}, // Key = Currency Code, Value = {name, code, units, country array}
+  currencyCodeList: [],
 
 };
 
 // Action Types
 // To set the base currency selected
 const SET_BASE_CURRENCY = 'SET_BASE_CURRENCY';
-// To set the supported list of currencies
-const SET_CURRENCY_LIST = 'SET_CURRENCY_LIST';
+// To set the supported list of currency details
+const SET_CURRENCY_DETAILS = 'SET_CURRENCY_DETAILS';
 
 // Reducer function that manipulates the state
 // It allows to set new state values based on the previous state
@@ -30,8 +31,13 @@ export function currencyExchangeReducer(state, action) {
   switch (action.type) {
     case SET_BASE_CURRENCY:
       return { ...state, baseCurrency: action.payload.baseCurrency };
-    case SET_CURRENCY_LIST:
-      return { ...state, currencyList: { ...action.payload.currencyList } };
+    case SET_CURRENCY_DETAILS:
+      // Get the codes of all the currency and set it to the state currencyCodeList also
+      return {
+        ...state,
+        currencyDetails: { ...action.payload.currencyDetails },
+        currencyCodeList: [...Object.keys(action.payload.currencyDetails)],
+      };
     default:
       return state;
   }
@@ -59,15 +65,15 @@ export function setBaseCurrency(baseCurrency) {
 
 /**
  * This function creates the action object for modifying the stored currency list state
- * @param {Object} currencyList - Object data with details of the supported currency list
+ * @param {Object} currencyDetails - Object data with details of the supported currency list
  *                              - Key = Currency Code, Value = {name, code, units, country array}
  * @returns - Action object
  */
-export function setCurrencyList(currencyList) {
+export function setCurrencyList(currencyDetails) {
   return {
-    type: SET_CURRENCY_LIST,
+    type: SET_CURRENCY_DETAILS,
     payload: {
-      currencyList,
+      currencyDetails,
     },
   };
 }

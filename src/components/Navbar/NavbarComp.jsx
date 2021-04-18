@@ -1,7 +1,7 @@
-import React/* , { useContext } */ from 'react';
-import { Navbar, Nav } from 'react-bootstrap';
+import React, { useContext } from 'react';
+import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
-// import { CurrencyExchangeContext } from '../../appContextStore.jsx';
+import { CurrencyExchangeContext, setBaseCurrency } from '../../appContextStore.jsx';
 
 /**
  * React component for Navbar
@@ -13,11 +13,26 @@ export default function NavbarComp() {
    * When the Provider component gets updated, useContext hook will render with latest
    * context value passed to "CurrencyExchangeContext"
    */
-  // const { store, dispatch } = useContext(CurrencyExchangeContext);
+  const { store, dispatch } = useContext(CurrencyExchangeContext);
+
+  const setSelectedBaseCurrency = (currencyCode) => {
+    dispatch(setBaseCurrency(currencyCode));
+  };
+
+  // Dropdown currency codes
+  const baseDropdownItems = store.currencyCodeList.map((currencyCode) => (
+    <NavDropdown.Item href="#" onClick={() => { setSelectedBaseCurrency(currencyCode); }}>{currencyCode}</NavDropdown.Item>
+  ));
+
+  const BaseCurrencyDropDown = () => (
+    <NavDropdown title={`Base: ${store.baseCurrency}`} id="collasible-nav-dropdown">
+      {baseDropdownItems}
+    </NavDropdown>
+  );
 
   return (
     <>
-      <Navbar bg="dark" expand="lg">
+      <Navbar bg="dark" variant="dark" expand="lg">
         <LinkContainer exact to="/">
           <Navbar.Brand>Assignment</Navbar.Brand>
         </LinkContainer>
@@ -29,7 +44,7 @@ export default function NavbarComp() {
             </LinkContainer>
           </Nav>
           <Nav className="ml-auto">
-            <Nav.Link>Base</Nav.Link>
+            <BaseCurrencyDropDown />
           </Nav>
         </Navbar.Collapse>
       </Navbar>
