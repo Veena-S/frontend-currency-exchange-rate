@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import React, { useContext } from 'react';
 import { CurrencyExchangeContext } from '../../appContextStore.jsx';
+import CurrencyCard from './CurrencyCardComp.jsx';
 
 /**
  * React component for displaying the details of a single currency
@@ -12,21 +13,18 @@ import { CurrencyExchangeContext } from '../../appContextStore.jsx';
  * the store state 'currencyDetails'
  * @returns - component that can be used to display the currency data
  */
-export default function CurrencyCard({ currencyCode, exchangeRate }) {
+export default function CurrencyCardsContainer() {
   const { store, dispatch } = useContext(CurrencyExchangeContext);
-  const singleCurrencyData = store.currencyDetails[currencyCode];
 
   return (
-    <div className="col mb-4">
-      <div className="card">
-        <div className="card-body">
-          <h5 className="card-title">
-            {currencyCode}
-            <span className="ml-auto">{Number(exchangeRate).toFixed(Number(singleCurrencyData.decimal_units))}</span>
-          </h5>
-          <p className="card-text">{singleCurrencyData.currency_name}</p>
-        </div>
+    <div className="container-sm mt-4">
+      <div className="row row-cols-md-3">
+        {Object.entries(store.latestExchangeRateDetails).map(([currencyCode, exchangeRate],
+          index) => (
+            <CurrencyCard key={`latest-${Number(index)}`} currencyCode={currencyCode} exchangeRate={exchangeRate} />
+        ))}
       </div>
     </div>
+
   );
 }
