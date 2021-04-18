@@ -4,8 +4,10 @@
  * 
  */
 
+import { useReducer } from "react";
+
 // Stores the state across the application
-export const appState = {
+export const initialState = {
   baseCurrency: 'USD',
   currencyList: {},
   
@@ -81,3 +83,19 @@ export const CurrencyExchangeContext = React.createContext(null);
 // consuming components to subscribe to context changes.
 const { Provider } = CurrencyExchangeContext;
 
+// Export a Provider component that contains the initialized reducer
+// The benefit of combining useReducer with context is being able to call 
+// the dispatch function anywhere down the component tree without passing through props.
+export function CurrencyExchangeProvider({children}) {
+  // The useReducer function accepts a reducer of type (state, action) ,
+  // and returns the current state paired with a dispatch method.
+  const [store, dispatch] = useReducer(currencyExchangeReducer, initialState);
+  // Returns the Provider component
+  // It accepts a value prop to be passed to consuming components
+  // that are descendants of this Provider
+  return (
+    <Provider value={{store, dispatch}}>
+      {children}
+    </Provider>
+  )
+}
