@@ -16,12 +16,20 @@ import CurrencyCard from './CurrencyCardComp.jsx';
 export default function CurrencyCardsContainer() {
   const { store, dispatch } = useContext(CurrencyExchangeContext);
 
+  if (undefined === store.latestExchangeRateDetails.rates
+    || store.latestExchangeRateDetails.rates === null
+    || store.currencyDetails === undefined || store.currencyDetails === null) {
+    return (<div />);
+  }
+
   return (
     <div className="container-sm mt-4">
       <div className="row row-cols-md-3">
-        {Object.entries(store.latestExchangeRateDetails).map(([currencyCode, exchangeRate],
+        {Object.entries(store.latestExchangeRateDetails.rates).map(([currencyCode, exchangeRate],
           index) => (
-            <CurrencyCard key={`latest-${Number(index)}`} currencyCode={currencyCode} exchangeRate={exchangeRate} />
+          (undefined !== store.currencyDetails[currencyCode]
+            && store.currencyDetails[currencyCode] !== null
+            && <CurrencyCard key={`latest-${Number(index)}`} singleCurrencyData={store.currencyDetails[currencyCode]} exchangeRate={exchangeRate} />)
         ))}
       </div>
     </div>

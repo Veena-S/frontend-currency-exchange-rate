@@ -1,5 +1,6 @@
 import React, { useContext, useEffect } from 'react';
 import { CurrencyExchangeContext, getCurrencyList, getLatestExchangeRates } from '../../appContextStore.jsx';
+import CurrencyCardsContainer from '../Currency/CurrencyCardsContainerComp.jsx';
 
 export default function HomePage() {
   const { store, dispatch } = useContext(CurrencyExchangeContext);
@@ -9,6 +10,7 @@ export default function HomePage() {
    */
   useEffect(() => {
     getCurrencyList(dispatch);
+    getLatestExchangeRates(dispatch, store.baseCurrency);
   }, []);
 
   /**
@@ -19,6 +21,12 @@ export default function HomePage() {
   }, [store.baseCurrency]);
 
   return (
-    <div />
+    <div>
+      { (store.latestExchangeRateDetails !== undefined
+        && store.latestExchangeRateDetails !== null
+        && store.latestExchangeRateDetails.rates !== undefined)
+        && <CurrencyCardsContainer />}
+
+    </div>
   );
 }

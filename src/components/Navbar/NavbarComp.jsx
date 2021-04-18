@@ -1,7 +1,9 @@
 import React, { useContext } from 'react';
 import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
-import { CurrencyExchangeContext, setBaseCurrency } from '../../appContextStore.jsx';
+import {
+  CurrencyExchangeContext, setBaseCurrency,
+} from '../../appContextStore.jsx';
 
 /**
  * React component for Navbar

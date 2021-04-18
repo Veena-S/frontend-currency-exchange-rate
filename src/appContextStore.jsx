@@ -31,6 +31,8 @@ export const initialState = {
 const SET_BASE_CURRENCY = 'SET_BASE_CURRENCY';
 // To set the supported list of currency details
 const SET_CURRENCY_DETAILS = 'SET_CURRENCY_DETAILS';
+// To set the currency code list
+const SET_CURRENCY_CODE_LIST = 'SET_CURRENCY_CODE_LIST';
 // To set the latest currency details
 const SET_LATEST_RATES = 'SET_LATEST_RATES';
 
@@ -45,6 +47,10 @@ export function currencyExchangeReducer(state, action) {
       return {
         ...state,
         currencyDetails: { ...action.payload.currencyDetails },
+      };
+    case SET_CURRENCY_CODE_LIST:
+      return {
+        ...state,
         currencyCodeList: [...Object.keys(action.payload.currencyDetails)],
       };
     case SET_LATEST_RATES:
@@ -83,9 +89,18 @@ export function setBaseCurrency(baseCurrency) {
  *                              - Key = Currency Code, Value = {name, code, units, country array}
  * @returns - Action object
  */
-export function setCurrencyList(currencyDetails) {
+export function setCurrencyDetails(currencyDetails) {
   return {
     type: SET_CURRENCY_DETAILS,
+    payload: {
+      currencyDetails,
+    },
+  };
+}
+
+export function setCurrencyCodeList(currencyDetails) {
+  return {
+    type: SET_CURRENCY_CODE_LIST,
     payload: {
       currencyDetails,
     },
@@ -151,9 +166,10 @@ export function CurrencyExchangeProvider({ children }) {
  * @param {function} dispatch - dispatch method to call create Action object function
  */
 export function getCurrencyList(dispatch) {
-  axios.get(`${BACKEND_URL}/api/currencies`)
+  return axios.get(`${BACKEND_URL}/api/currencies`)
     .then((result) => {
-      dispatch(setCurrencyList(result.data));
+      dispatch(setCurrencyDetails(result.data));
+      dispatch(setCurrencyCodeList(result.data));
     });
 }
 
@@ -163,7 +179,7 @@ export function getCurrencyList(dispatch) {
  * @param {string} baseCurrency - Base currency to specify in the request to the server
  */
 export function getLatestExchangeRates(dispatch, baseCurrency) {
-  axios.get(`${BACKEND_URL}/api/latest-rate/${baseCurrency}`)
+  return axios.get(`${BACKEND_URL}/api/latest-rate/${baseCurrency}`)
     .then((result) => {
       dispatch(setLatestRates(result.data));
     });
