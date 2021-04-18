@@ -17,6 +17,12 @@ export const initialState = {
   baseCurrency: 'USD',
   currencyDetails: {}, // Key = Currency Code, Value = {name, code, units, country array}
   currencyCodeList: [],
+  /**
+   { date: '2021-04-17', base: 'USD',
+      rates: { AED: 3.6725, AFN: 77.49777256, .... }
+    }
+   */
+  latestExchangeRateDetails: {},
 
 };
 
@@ -25,6 +31,8 @@ export const initialState = {
 const SET_BASE_CURRENCY = 'SET_BASE_CURRENCY';
 // To set the supported list of currency details
 const SET_CURRENCY_DETAILS = 'SET_CURRENCY_DETAILS';
+// To set the latest currency details
+const SET_LATEST_RATES = 'SET_LATEST_RATES';
 
 // Reducer function that manipulates the state
 // It allows to set new state values based on the previous state
@@ -38,6 +46,11 @@ export function currencyExchangeReducer(state, action) {
         ...state,
         currencyDetails: { ...action.payload.currencyDetails },
         currencyCodeList: [...Object.keys(action.payload.currencyDetails)],
+      };
+    case SET_LATEST_RATES:
+      return {
+        ...state,
+        latestExchangeRateDetails: { ...action.payload.latestExchangeRateDetails },
       };
     default:
       return state;
@@ -76,6 +89,18 @@ export function setCurrencyList(currencyDetails) {
     payload: {
       currencyDetails,
     },
+  };
+}
+
+/**
+ * Function to create action object used to modify the state for latestExchangeRateDetails
+ * @param {Object} latestExchangeRateDetails - Latest currency exchange rates returned from server
+ * @returns - Action object
+ */
+export function setLatestRates(latestExchangeRateDetails) {
+  return {
+    type: SET_LATEST_RATES,
+    payload: { latestExchangeRateDetails },
   };
 }
 
@@ -121,10 +146,25 @@ export function CurrencyExchangeProvider({ children }) {
  *  Requests to the Backend or any other ajax requests *
  *
  */
-
+/**
+ * This function gets the supported currency list from the server
+ * @param {function} dispatch - dispatch method to call create Action object function
+ */
 export function getCurrencyList(dispatch) {
   axios.get(`${BACKEND_URL}/api/currencies`)
     .then((result) => {
       dispatch(setCurrencyList(result.data));
+    });
+}
+
+/**
+ * Function to get the latest currency exchange rate based on the specified base currency
+ * @param {function} dispatch - Dispatch function for Action object creation
+ * @param {string} baseCurrency - Base currency to specify in the request to the server
+ */
+export function getLatestExchangeRates(dispatch, baseCurrency) {
+  axios.get(`${BACKEND_URL}/api/latest-rate/${baseCurrency}`)
+    .then((result) => {
+      dispatch(setLatestRates(result.data));
     });
 }
